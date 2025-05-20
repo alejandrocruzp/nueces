@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Comparador de Nueces</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+    input {
+      width: 80px;
+      margin: 5px;
+    }
+    .section {
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Comparador de Precio por Gramo - Nueces</h1>
+
+  <div class="section">
+    <h2>Bolsa de nueces mixtas</h2>
+    <label>Precio total ($): <input type="number" id="mix_price" step="0.01"></label><br>
+    <label>Peso total (g): <input type="number" id="mix_weight" step="1"></label>
+  </div>
+
+  <div class="section">
+    <h2>Bolsa individual de cada nuez</h2>
+    <p><strong>Pecanas:</strong> <input type="number" id="pecan_price" placeholder="Precio" step="0.01">
+       <input type="number" id="pecan_weight" placeholder="Peso (g)" step="1"></p>
+    <p><strong>Nuez de la India:</strong> <input type="number" id="cashew_price" placeholder="Precio" step="0.01">
+       <input type="number" id="cashew_weight" placeholder="Peso (g)" step="1"></p>
+    <p><strong>Almendras:</strong> <input type="number" id="almond_price" placeholder="Precio" step="0.01">
+       <input type="number" id="almond_weight" placeholder="Peso (g)" step="1"></p>
+    <p><strong>Pistaches:</strong> <input type="number" id="pistachio_price" placeholder="Precio" step="0.01">
+       <input type="number" id="pistachio_weight" placeholder="Peso (g)" step="1"></p>
+  </div>
+
+  <button onclick="calcular()">Calcular</button>
+
+  <div class="section">
+    <h2>Resultado</h2>
+    <p id="resultado"></p>
+  </div>
+
+  <script>
+    function calcular() {
+      const mixPrice = parseFloat(document.getElementById("mix_price").value);
+      const mixWeight = parseFloat(document.getElementById("mix_weight").value);
+      const mixPPG = mixPrice / mixWeight;
+
+      const prices = [
+        parseFloat(document.getElementById("pecan_price").value),
+        parseFloat(document.getElementById("cashew_price").value),
+        parseFloat(document.getElementById("almond_price").value),
+        parseFloat(document.getElementById("pistachio_price").value)
+      ];
+      const weights = [
+        parseFloat(document.getElementById("pecan_weight").value),
+        parseFloat(document.getElementById("cashew_weight").value),
+        parseFloat(document.getElementById("almond_weight").value),
+        parseFloat(document.getElementById("pistachio_weight").value)
+      ];
+
+      const totalPrice = prices.reduce((a, b) => a + b, 0);
+      const totalWeight = weights.reduce((a, b) => a + b, 0);
+      const comboPPG = totalPrice / totalWeight;
+
+      let mensaje = `<strong>Precio por gramo:</strong><br>`;
+      mensaje += `Mezcla: $${mixPPG.toFixed(2)} / g<br>`;
+      mensaje += `Individuales: $${comboPPG.toFixed(2)} / g<br><br>`;
+
+      if (mixPPG < comboPPG) {
+        mensaje += "✅ <strong>Conviene comprar la mezcla.</strong>";
+      } else if (comboPPG < mixPPG) {
+        mensaje += "✅ <strong>Conviene comprar las bolsas individuales.</strong>";
+      } else {
+        mensaje += "⚖️ <strong>Ambas opciones cuestan lo mismo por gramo.</strong>";
+      }
+
+      document.getElementById("resultado").innerHTML = mensaje;
+    }
+  </script>
+</body>
+</html>
